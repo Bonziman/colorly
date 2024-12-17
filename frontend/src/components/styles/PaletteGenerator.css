@@ -1,0 +1,131 @@
+.palette-generator {
+  text-align: center;
+  margin: 20px;
+}
+
+.palette {
+  display: flex;
+  flex-direction: row; /* Keep child divs in a horizontal row */
+  width: 100%;         /* Make parent div take the full width */
+  gap: 0;              /* No gap between child divs (you can adjust this if needed) */
+  margin-bottom: 40px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.palette-color-box {
+  flex-grow: 1;        /* Allow the boxes to grow to fill the available width */
+  flex-basis: auto;    /* Let each box maintain its natural width */
+  height: 480px;       /* Fixed height for the boxes */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+.palette-color-box:hover .icons {
+  display: grid;
+}
+.pallc-save-button, .pallc-copy-button, .pallc-delete-button{
+  display: inline-flex;
+
+  color: white;
+  background: none !important;
+  border-radius: 50%;
+  padding: 4px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  align-items: center;
+  justify-content: center;
+}
+.palette-color-bo:hover pallc-save-button {
+  display: flex;
+}
+.palette-color-box p {
+  text-align: center;
+  font-size: 14px;
+}
+
+
+.icons {
+  
+  gap: 50px;
+  cursor: pointer;
+  width: auto;
+  display: none;
+  
+}
+
+.color-box .color-info {
+  text-align: center;
+  font-size: 10px;
+  color: #fff;
+  text-shadow: 1px 1px 2px black;
+}
+.color-info {
+  position: absolute;
+    bottom: 80px;
+}
+.color-info strong , .color-info p{
+  font-size: 18px !important;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+.modal input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #4629ef;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #4629ef;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
+  overflow: visible;
+  box-sizing: content-box;
+  width: 60%;
+  height: auto;
+}

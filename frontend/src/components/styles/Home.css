@@ -1,0 +1,297 @@
+.hero-container {
+  display: flex;
+  align-items: stretch;
+  height: 600px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.hero-left {
+  width: 50% !important;
+  text-align: left !important;
+  height: 80%;
+  border-radius: 20px;
+  /* Create the linear gradient background */
+  /* background: 
+    linear-gradient(135deg, #140257, #006AFF), /* Two-color gradient */
+   /* url('https://www.transparenttextures.com/patterns/bedge-grunge.png'); /* Noise texture image URL */
+  
+  /*background-size: cover; /* Ensure texture scales to the div size */
+  /*background-blend-mode: overlay;  Blend the gradient and noise texture */
+  /*padding: 30px;*/
+
+}
+.hero-right::after {
+  content: "";
+  background-image: url("/src/assets/flower.gif");
+  background-size: cover; /* Adjust as needed */
+  position: absolute;
+  top: 100px;
+  left: -120px;
+  width: 200px; /* Adjust as needed */
+  height: 150px; /* Adjust as needed */
+  z-index: 999;
+  mix-blend-mode:darken; 
+  display: none;
+}
+.hero-right img {
+  width: auto;
+ 
+  height: 80%;
+  margin-top: 10px;
+  border-radius: 20px;
+  justify-self: right;
+}
+
+
+.hero-left h1 {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  color: black;
+  font-weight: 800;
+  font-size: 58px !important;
+  text-align: left;
+
+  line-height: auto;
+}
+
+.hero-right {
+
+  background-image: url("/src/assets/flower.gif");
+  background-size: cover;
+  width: 44%;
+  height: 90%;
+  align-items: center;
+  display: grid;
+  align-items: center;
+  border-radius: 20px;
+}
+.hero-left p {
+  text-align: left;
+  margin-bottom: 80px;
+  font-size: 16px;
+  color: #666 !important;
+}
+.Cta-but {
+  padding: 15px 10px;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: medium;
+  font-size: 18px;
+  border-radius: 16px;
+  width: 250px;
+}
+.Cta-but.primary{
+  background-color: #2f0eed;
+  color: white;
+  border: none;
+}
+.Cta-but.primary:hover{
+  background-color: #4629ef;
+  color: white;
+  border: none;
+}
+.Cta-but.secondary{
+  background-color: white;
+  color: black;
+  box-shadow: inset #c6c7cd 0 0 0 1px;
+  border: none;
+}
+.Cta-but.secondary:hover{
+  background-color: white;
+  color: black;
+  box-shadow: inset #727272 0 0 0 1px;
+  border: none;
+}
+.double-Cta {
+  display: flex;
+  gap: 20px;
+}
+
+
+
+/* Container for the features */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexibly adjust to screen size */
+  gap: 50px; /* Space between feature items */
+  margin-top: 60px !important;
+  margin: 0 auto;
+  max-width: 1400px; /* Limit max width */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Individual feature card */
+.feature {
+  background-color: #F7F7F8;
+  border-radius: 8px;
+
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center !important;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Image styling */
+.feature img {
+  max-width: 100px; /* Restrict image size */
+  height: auto;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for the feature cards */
+.feature:hover {
+  transform: translateY(-10px); /* Lift effect */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover effect for the image */
+.feature:hover img {
+  transform: scale(1.1); /* Image zoom on hover */
+}
+
+/* Heading styling */
+.feature h2 {
+  font-size: 1.5rem;
+  color: black !important;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Paragraph description styling */
+.feature p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 0;
+  max-width: 280px; /* Limit paragraph width */
+  text-align: center !important;
+}
+
+/* Contact Section - Specific styles */
+.contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 80px;
+  gap: 40px; /* Space between form and image */
+  flex-wrap: wrap; /* Allow for stacking on smaller screens */
+}
+
+.contact h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.contact p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Contact Form - Left Side */
+.contact-form {
+  flex: 1;
+  max-width: 50%;
+  background-color: white;
+
+  border-radius: 10px;
+ 
+}
+.contact-form form div {
+ width: 100%;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.contact-form textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+
+.contact-form textarea:focus-visible, input:focus {
+  border-color: #007bff !important;
+  outline: none;
+}
+.contact-form button {
+  width: 100%;
+  padding: 12px 20px;
+
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: #45a049;
+}
+
+
+.contact-form button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.contact .status-message {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #4caf50; /* Green for success */
+  text-align: center;
+}
+
+.contact .status-message.error {
+  color: #f44336; /* Red for error */
+}
+
+/* Contact Image - Right Side */
+.contact-image {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for image */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact {
+    flex-direction: column; /* Stack form and image vertically on small screens */
+    text-align: center;
+  }
+
+  .contact-form {
+    max-width: 100%; /* Full width for the form */
+    margin-bottom: 30px;
+  }
+
+  .contact-image {
+    max-width: 100%;
+  }
+}

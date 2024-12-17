@@ -1,0 +1,26 @@
+:root{
+  font-family: Inter, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+}
+.color-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+p {
+  color: #464853;
+}
+
+.color-variation-section {
+  display: flex;
+}
+input[type="color"] {
+  margin: 10px;
+  padding: 5px;
+}
+
+.hex-value {
+  margin-left: 5px;
+}

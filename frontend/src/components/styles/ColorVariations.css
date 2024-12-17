@@ -1,0 +1,130 @@
+/* src/components/ColorVariations.css */
+
+.color-variations {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.row-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Space between title and description */
+  width: 100%;
+}
+
+.row-container h3 {
+  font-size: 38px;
+  margin: 0;
+  text-align: left;
+}
+
+.row-container p {
+  font-size: 26px;
+  margin: 0;
+  color: #8a8a94; /* Subtle color for description */
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  box-shadow: 0 1px 15px 7px rgba(0, 0, 0, .05);
+  padding: 0;
+  border-radius: 16px; /* No background color or rounding for the whole row */
+  background-color: transparent; /* Transparent background */
+  overflow: hidden;
+}
+
+.color-box {
+  position: relative;
+  flex: 1; /* Ensure boxes fill equal space */
+  height: 120px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  box-sizing: border-box; /* Prevent any box size misalignment */
+  margin: 0px !important;
+  align-items: end;
+  color: white;
+  transition: transform 0.3s ease, z-index 0.3s ease;
+}
+
+.color-box:first-child {
+  border-top-left-radius: 16px; /* Rounded top-left corner */
+  border-bottom-left-radius: 16px; /* Rounded bottom-left corner */
+}
+
+.color-box:last-child {
+  border-top-right-radius: 16px; /* Rounded top-right corner */
+  border-bottom-right-radius: 16px; /* Rounded bottom-right corner */
+}
+
+.color-box:hover {
+  transform: scaleX(1.2); /* Scale horizontally by 20% */
+  z-index: 999; /* Bring to front */
+}
+
+.color-box span {
+  font-size: 14px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* Improves readability */
+}
+
+.copy-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none; /* Hidden by default */
+  font-size: 18px;
+  color: white;
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  width: 20px;
+}
+
+.color-box:hover .copy-icon  {
+  display: block; /* Visible on hover */
+}
+
+.color-box:hover .save-button  {
+  display: flex; /* Visible on hover */
+}
+.copy-icon-box {
+  background-color: white;
+}
+.save-button {
+  position: absolute;
+  top: 45px;
+  right: 10px;
+  display: none; /* Hidden by default */
+  font-size: 18px;
+  color: rgb(0, 0, 0);
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.save-button:hover {
+  background-color: #000000;
+  cursor: pointer;
+  color: white;
+
+}

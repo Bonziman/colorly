@@ -1,0 +1,24 @@
+.color-picker-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.picker {
+  flex: 1;
+}
+
+.color-info {
+  flex: 1;
+  font-family: Arial, sans-serif;
+}
+
+.color-info h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.color-info p {
+  margin: 5px 0;
+  font-size: 1em;
+}
