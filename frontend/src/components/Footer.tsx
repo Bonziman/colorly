@@ -1,4 +1,5 @@
 import React from 'react';
+import SubscriptionForm from './SubscriptionForm';
 
 const Footer: React.FC = () => {
   return (
@@ -6,17 +7,9 @@ const Footer: React.FC = () => {
       <div style={styles.sectionContainer}>
         {/* Logo & Subscription */}
         <div style={styles.column}>
-            <img src="/src/assets/Colorly Logo.svg" alt="Logo" style={styles.logo} />
+          <img src="/src/assets/Colorly Logo.svg" alt="Logo" style={styles.logo} />
           <h3>Subscribe Now</h3>
-          <div style={styles.subscribeContainer}>
-            <input
-              className='subscribeinput'
-              type="email"
-              placeholder="Enter your Email"
-              style={styles.input}
-            />
-            <button style={styles.button}>Subscribe</button>
-          </div>
+          <SubscriptionForm />
         </div>
 
         {/* Information Links */}
@@ -98,26 +91,6 @@ const styles = {
   },
   logo: {
     margin: '0 0 10px',
-  },
-  subscribeContainer: {
-    display: 'flex',
-    gap: '10px',
-    marginTop: '10px',
-    flexDirection: 'column',
-  },
-  subscribeinput: {
-    width: '50%',
-  },
-  input: {
-    flex: '1',
-    padding: '5px',
-  },
-  button: {
-    padding: '5px 10px',
-    backgroundColor: '#000',
-    color: '#fff',
-    border: 'none',
-    cursor: 'pointer',
   },
   linkList: {
     listStyle: 'none',

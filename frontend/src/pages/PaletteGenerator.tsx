@@ -4,7 +4,21 @@ import copy from "copy-to-clipboard";
 import namer from "color-namer";
 import "../components/styles/PaletteGenerator.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faCopy, faHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faCopy,
+  faHeart,
+  faBars,
+  faEye,
+  faSun,
+  faShareAlt,
+  faSave,
+  faGripHorizontal,
+  faSync,
+  faCamera,
+} from "@fortawesome/free-solid-svg-icons";
+
+
 
 type Color = {
   hex: string;
@@ -166,7 +180,32 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
 
   return (
     <div className="palette-generator">
-      <h2>Palette Generator</h2>
+      {/* Toolbar replacing the title */}
+      <div className="toolbar">
+        <div class="toolbar-button">
+          <i class="icon-camera"></i>
+          <span class="button-label">Camera</span>
+        </div>
+        <div className="toolbar-button">
+          <FontAwesomeIcon icon={faCamera} className="toolbar-icon" />
+        </div>
+        <FontAwesomeIcon icon={faSync} className="toolbar-icon" />
+        <FontAwesomeIcon icon={faGripHorizontal} className="toolbar-icon" />
+        <FontAwesomeIcon icon={faSun} className="toolbar-icon" />
+        <FontAwesomeIcon icon={faEye} className="toolbar-icon" />
+        <span className="toolbar-text">View</span>
+        <FontAwesomeIcon icon={faShareAlt} className="toolbar-icon" />
+        <span className="toolbar-text">Export</span>
+
+        <div className="toolbar-button">
+          <span> <FontAwesomeIcon icon={faHeart} className="toolbar-icon" onClick={() => setShowModal(true)} /> <span className="toolbar-icon tooltip">Save Palette</span></span>
+
+
+        </div>
+        <FontAwesomeIcon icon={faBars} className="toolbar-icon" />
+      </div>
+
+      {/* Palette display */}
       <div className="palette">
         {palette.map((color, index) => (
           <div

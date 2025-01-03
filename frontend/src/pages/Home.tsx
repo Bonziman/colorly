@@ -48,7 +48,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
       <div className="hero-container">
         <div className="hero-left">
           <h1 className="main-slogan">
-            Your Colors, <br /> Your Masterpiece
+            Your Colors, <br /> Your <span>Masterpiece</span>
           </h1>
           <p>
             Effortlessly pick and apply colors to bring your pixel art to life.

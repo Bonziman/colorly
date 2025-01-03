@@ -1,3 +1,4 @@
+// src/components/Header.tsx
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
@@ -17,11 +18,9 @@ const Header: React.FC = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  // Construct the URL for the profile picture
   const profilePictureUrl = user?.profile_picture
-  ? `http://127.0.0.1:5000/uploads/profile_pictures/${user.profile_picture.split('/').pop()}`  // Use the correct backend URL
-  : '/src/assets/default_profile.png';  // Default image if no profile picture exists
-
+    ? `http://127.0.0.1:5000/uploads/profile_pictures/${user.profile_picture.split('/').pop()}`
+    : '/src/assets/default_profile.png';
 
   return (
     <header className="header">
@@ -51,7 +50,7 @@ const Header: React.FC = () => {
           <div className="user-profile" onClick={toggleDropdown}>
             <div className="user-info">
               <div className="profile-circle">
-                <img src={profilePictureUrl} alt="Profile" /> {/* Corrected the image path */}
+                <img src={profilePictureUrl} alt="Profile" />
               </div>
               <span className="username">{user.username}</span>
             </div>

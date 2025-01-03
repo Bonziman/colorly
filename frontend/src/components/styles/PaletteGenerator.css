@@ -123,9 +123,95 @@ button:hover {
   justify-content: center;
 }
 
-svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
-  overflow: visible;
-  box-sizing: content-box;
-  width: 60%;
-  height: auto;
+
+/* Toolbar Styles */
+.toolbar {
+  display: flex;
+  justify-content: space-between; /* Space out icons evenly */
+  align-items: center;
+  background-color: #f4f4f4; /* Neutral background color */
+  padding: 10px 20px; /* Add some spacing */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+  margin-bottom: 20px; /* Space below the toolbar */
+  overflow-x: auto; /* Allow scrolling if icons exceed the width */
+}
+
+.toolbar-icon {
+  color: #555; /* Neutral icon color */
+  font-size: 18px; /* Icon size */
+  margin: 0 10px; /* Spacing between icons */
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.toolbar-icon:hover {
+  color: #4629ef; /* Highlight color on hover */
+  transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
+.toolbar-text {
+  font-size: 14px; /* Font size for text */
+  color: #555; /* Neutral text color */
+  margin-left: 5px; /* Space between the icon and the text */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.toolbar-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar-icon .save {
+  color: transparent;
+   -webkit-text-stroke-width: 2px;
+   -webkit-text-stroke-color: red;
+}
+.tooltip {
+  display: none !important;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+}
+
+.toolbar-button .button-label {
+  display: none; /* Hide the label by default */
+  position: absolute;
+
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8); /* Black background for visibility */
+  color: white; /* White text */
+  padding: 4px 8px; /* Padding for the label */
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap; /* Prevents text wrapping */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for aesthetics */
+  z-index: 10; /* Ensures the label is above other elements */
+}
+
+.toolbar-button:hover .button-label {
+  display: block; /* Show the label when hovering over the button */
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-wrap: wrap; /* Allow icons to wrap on smaller screens */
+    justify-content: center; /* Center-align icons on smaller screens */
+  }
+
+  .toolbar span {
+    margin-right: 10px; /* Reduce spacing for smaller screens */
+  }
+
+  .toolbar-icon {
+    font-size: 16px; /* Slightly smaller icon size */
+  }
 }

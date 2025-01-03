@@ -139,6 +139,8 @@
   color: white;
   align-items: center !important;
   display: flex;
+  width: auto;
+  padding-inline: 10px;
 }
 
 .nav-button.signup:hover {
