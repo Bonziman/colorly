@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { sendWelcomeEmail } from '../utils/emailService'; // Import the email service
+import { sendWelcomeEmail } from '../utils/emailService'; // Import the updated email service
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
@@ -29,12 +29,12 @@ const SubscriptionForm: React.FC = () => {
         throw error;
       }
 
-      // Send welcome email using Mailgun
-      await sendWelcomeEmail(email); // Call the function to send the welcome email
+      // Send welcome email using Sendinblue
+      await sendWelcomeEmail(email); // Call the Sendinblue email function
 
       setEmail('');
       setStatus('success');
-      setMessage('Thank you for subscribing! A welcome email has been sent.');
+      setMessage('Thank you for subscribing! Welcome aboard!');
     } catch (error) {
       console.error('Subscription error:', error);
       setStatus('error');
