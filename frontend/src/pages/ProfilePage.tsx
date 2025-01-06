@@ -1,47 +1,56 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ProfilePage = () => {
   const [colors, setColors] = useState([]);
   const [palettes, setPalettes] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem('jwtToken');
-        
-        const colorsResponse = await fetch('/colors', {
+
+        // Fetch Colors
+        const colorsResponse = await axios.get('/user/colors', {
           headers: { 'Authorization': `Bearer ${token}` },
         });
-        
-        const colorsData = await colorsResponse.json();
-        
-        if (Array.isArray(colorsData)) {
-          setColors(colorsData);
+
+        if (Array.isArray(colorsResponse.data)) {
+          setColors(colorsResponse.data);
         } else {
           setError('Colors response is not an array');
+          console.error('Error: Colors response is not an array');
         }
 
-        const palettesResponse = await fetch('/user/palettes', {
+        // Fetch Palettes
+        const palettesResponse = await axios.get('/user/palettes', {
           headers: { 'Authorization': `Bearer ${token}` },
         });
 
-        const palettesData = await palettesResponse.json();
-        
-        if (Array.isArray(palettesData)) {
-          setPalettes(palettesData);
+        if (Array.isArray(palettesResponse.data)) {
+          setPalettes(palettesResponse.data);
         } else {
           setError('Palettes response is not an array');
+           console.error('Error: Palettes response is not an array');
         }
-        
+
       } catch (err) {
         setError('Error fetching data');
-        console.error(err);
+        console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -52,7 +61,16 @@ const ProfilePage = () => {
       <h1>User Colors</h1>
       <ul>
         {colors.map((color) => (
-          <li key={color.id}>{color.name}: {color.hex_value}</li>
+          <li key={color.id}>
+            {color.name}: <span style={{ 
+                backgroundColor: color.hex_value, 
+                padding: "5px 10px",
+                margin: "0 5px",
+                color: "white",
+            }}>
+              {color.hex_value}
+            </span>
+          </li>
         ))}
       </ul>
 
@@ -63,8 +81,8 @@ const ProfilePage = () => {
             {palette.name}
             <ul>
               {palette.colors.map((color, index) => (
-                <li key={index} style={{ backgroundColor: color }}>
-                  {color}
+                <li key={index} style={{ backgroundColor: color, padding: "5px", margin: "2px" }}>
+                    {color}
                 </li>
               ))}
             </ul>
