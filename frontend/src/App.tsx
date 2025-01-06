@@ -11,6 +11,7 @@ import ColorGenerator from "./pages/ColorGenerator"; // New Color Generator page
 import PaletteGenerator from "./pages/PaletteGenerator";
 import Notification from "./components/Notification";
 import "./App.css";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   const { user } = useContext(AuthContext);
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/color-generator" element={<ColorGenerator setNotification={setNotification} />} />
             <Route path="/palette-generator" element={<PaletteGenerator setNotification={setNotification} />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
 
           {notification.message && (

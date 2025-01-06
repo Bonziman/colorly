@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import randomColor from "randomcolor";
 import copy from "copy-to-clipboard";
 import namer from "color-namer";
@@ -12,7 +12,6 @@ import {
   faEye,
   faSun,
   faShareAlt,
-  faSave,
   faGripHorizontal,
   faSync,
   faCamera,

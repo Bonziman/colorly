@@ -56,6 +56,7 @@ const Header: React.FC = () => {
             </div>
             {dropdownVisible && (
               <ul className="dropdown-menu">
+                <li onClick={() => navigate('/profile')}>Profile</li>
                 <li>Settings</li>
                 <li>Colorly Plus</li>
                 <li onClick={handleLogout} className="logout-item">Logout</li>

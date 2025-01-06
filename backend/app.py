@@ -265,5 +265,44 @@ def create_app():
             for palette in palettes
         ]
         return jsonify(palette_list), 200
+    
+    # Retrieve colors by user: GET /user/colors
+    @app.route('/user/colors', methods=['GET'])
+    @jwt_required()  # Ensure the user is authenticated
+    def get_user_colors():
+        user_id = get_jwt_identity()  # Get user ID from the JWT token
+        print(f"Authenticated User ID: {user_id}")
+        try:
+            # Fetch colors associated with the user
+            user_colors = Color.query.filter_by(user_id=user_id).all()
+            print(f"Fetched User Colors: {user_colors}")
+            colors_list = [
+                {"id": color.id, "hex_value": color.hex_value, "name": color.name}
+                for color in user_colors
+            ]
+            return jsonify(colors_list), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        
+    # Retrieve palettes by user: GET /user/palettes
+    @app.route('/user/palettes', methods=['GET'])
+    @jwt_required()  # Ensure the user is authenticated
+    def get_user_palettes():
+        user_id = get_jwt_identity()  # Get user ID from the JWT token
+        try:
+            # Fetch palettes associated with the user
+            user_palettes = Palette.query.filter_by(user_id=user_id).all()
+            palettes_list = [
+            {
+                "id": palette.id,
+                "name": palette.name,
+                "colors": palette.colors,  # JSON list of color hex values
+            }
+            for palette in user_palettes
+        ]
+            return jsonify(palettes_list), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
 
     return app
