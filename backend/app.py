@@ -11,6 +11,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os, re, jwt
+import json
 
 # Folder where profile pictures will be stored
 UPLOAD_FOLDER = 'uploads/profile_pictures'
@@ -266,43 +267,81 @@ def create_app():
         ]
         return jsonify(palette_list), 200
     
-    # Retrieve colors by user: GET /user/colors
-    @app.route('/user/colors', methods=['GET'])
-    @jwt_required()  # Ensure the user is authenticated
-    def get_user_colors():
-        user_id = get_jwt_identity()  # Get user ID from the JWT token
-        print(f"Authenticated User ID: {user_id}")
-        try:
-            # Fetch colors associated with the user
-            user_colors = Color.query.filter_by(user_id=user_id).all()
-            print(f"Fetched User Colors: {user_colors}")
-            colors_list = [
-                {"id": color.id, "hex_value": color.hex_value, "name": color.name}
-                for color in user_colors
-            ]
-            return jsonify(colors_list), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
-        
-    # Retrieve palettes by user: GET /user/palettes
-    @app.route('/user/palettes', methods=['GET'])
-    @jwt_required()  # Ensure the user is authenticated
-    def get_user_palettes():
-        user_id = get_jwt_identity()  # Get user ID from the JWT token
-        try:
-            # Fetch palettes associated with the user
-            user_palettes = Palette.query.filter_by(user_id=user_id).all()
-            palettes_list = [
-            {
-                "id": palette.id,
-                "name": palette.name,
-                "colors": palette.colors,  # JSON list of color hex values
-            }
-            for palette in user_palettes
+    @app.route('/api/users/<int:user_id>', methods=['GET'])
+    def get_user(user_id):
+        """Retrieves basic user information."""
+        user = User.query.get(user_id)
+
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            # ... other basic fields ...
+            # Do NOT include colors and palettes here
+        }
+
+        return jsonify(user_data), 200
+
+    @app.route('/api/users/<int:user_id>/colors', methods=['GET'])
+    @jwt_required()
+    def get_user_colors(user_id):
+        """Retrieves a list of colors saved by the user."""
+    
+        # Check if the user exists (optional, but good practice)
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        # Query the Color model directly, filtering by user_id
+        colors = Color.query.filter_by(user_id=user_id).all()
+
+        colors_data = [
+        {
+            'id': color.id,
+            'hex_code': color.hex_value,
+            'name' : color.name,
+        }
+        for color in colors
         ]
-            return jsonify(palettes_list), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+
+        return jsonify({
+            'colors': colors_data,
+        }), 200
 
 
+    @app.route('/api/users/<int:user_id>/palettes', methods=['GET'])
+    @jwt_required()
+    def get_user_palettes(user_id):
+        """Retrieves a list of palettes for a specific user."""
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        palettes = Palette.query.filter_by(user_id=user_id).all()
+
+        palettes_data = []
+        for palette in palettes:
+            palette_data = {
+                'id': palette.id,
+                'name': palette.name,
+                'colors': [] # Set it as an empty list by default.
+            }
+            if palette.colors: #Check if palette.colors field is set.
+                if isinstance(palette.colors, str): # Check if it is a string.
+                    try:
+                        palette_data['colors'] = json.loads(palette.colors) # if it is, parse it as json list.
+                    except json.JSONDecodeError:
+                        print(f"Could not decode json in palette {palette.id}")
+                        continue
+                elif isinstance(palette.colors, list): #check if it is already a list
+                    palette_data['colors'] = palette.colors #use as is
+
+            palettes_data.append(palette_data)
+
+        return jsonify({
+            'palettes': palettes_data,
+        }), 200
     return app

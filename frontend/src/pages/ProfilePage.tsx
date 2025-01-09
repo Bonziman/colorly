@@ -14,8 +14,10 @@ const ProfilePage = () => {
         const token = localStorage.getItem('jwtToken');
 
         // Fetch Colors
-        const colorsResponse = await axios.get('/user/colors', {
-          headers: { 'Authorization': `Bearer ${token}` },
+        const colorsResponse = await axios.get("http://localhost:5000/user/colors", { // Correct URL
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (Array.isArray(colorsResponse.data)) {
@@ -26,8 +28,10 @@ const ProfilePage = () => {
         }
 
         // Fetch Palettes
-        const palettesResponse = await axios.get('/user/palettes', {
-          headers: { 'Authorization': `Bearer ${token}` },
+        const palettesResponse = await axios.get("http://localhost:5000/user/palettes", { // Correct URL
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (Array.isArray(palettesResponse.data)) {

@@ -119,7 +119,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
   // Copy the color hex value to clipboard
   const copyColor = (hex: string) => {
     copy(hex);
-    setNotification({ message: `Copied: ${hex}`, duration: 3000 });
+    setNotification({ message: `Color Copied: ${hex}`, duration: 3000 });
   };
 
   // Save individual color and show notification

@@ -4,10 +4,10 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #e8e8e8;
+  background-color: #4629ef;
   border: 2px solid #4629ef;
-  color: #4629ef !important;
-  padding: 10px 20px;
+  color: white !important;
+  padding: 0px 10px;
   border-radius: 5px;
   font-size: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 .notification p {
-  color: #4629ef !important;
+  color: white;
 }
 
 @keyframes slideIn {
