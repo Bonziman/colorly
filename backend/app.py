@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_login import login_user
 from flask_login import login_required, current_user  # type: ignore
 from werkzeug.security import check_password_hash
-import datetime
+from datetime import timedelta
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
@@ -38,6 +38,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config['SECRET_KEY'] = 'your-secret-key'
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads/profile_pictures')
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size (16 MB)
     # Set the path for the profile pictures folder
