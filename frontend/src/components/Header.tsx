@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
@@ -38,6 +37,9 @@ const Header: React.FC = () => {
           <li>
             <Link to="/palette-generator" className="nav-button">Palette Generator</Link>
           </li>
+            <li>
+                <Link to="/image-palette" className="nav-button">Image Palette</Link>
+            </li>
         </ul>
       </nav>
       <div className="cta-container">

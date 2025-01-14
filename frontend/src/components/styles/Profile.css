@@ -143,3 +143,14 @@
 .export-menu button:hover {
     background-color: lightgray;
 }
+
+.laoder-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.loader {
+  width: 100px;
+}

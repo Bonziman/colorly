@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthContext } from "./contexts/AuthContext";
 import Header from "./components/Header";
@@ -10,8 +10,9 @@ import Home from "./pages/Home"; // New Home page
 import ColorGenerator from "./pages/ColorGenerator"; // New Color Generator page
 import PaletteGenerator from "./pages/PaletteGenerator";
 import Notification from "./components/Notification";
-import "./App.css";
+import ImagePalette from "./pages/ImagePalette"; // Import ImagePalette component
 
+import "./App.css";
 import Profile from "./pages/Profile";
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/color-generator" element={<ColorGenerator setNotification={setNotification} />} />
             <Route path="/palette-generator" element={<PaletteGenerator setNotification={setNotification} />} />
             <Route path="/profile" element={<Profile setNotification={setNotification} />} />
+            <Route path="/image-palette" element={<ImagePalette setNotification={setNotification} />}  />
           </Routes>
 
           {notification.message && (

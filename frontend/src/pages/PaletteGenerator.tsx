@@ -110,14 +110,13 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
 
       const generateMonochromatic = (baseColor, modifier) => {
           const base = chroma(baseColor);
-           return chroma.hsl(base.get('hsl.h'), base.get('hsl.s'),(Math.random() * (0.9 - 0.1) + 0.1) + modifier*0.05).hex()
+          return chroma.hsl(base.get('hsl.h'), base.get('hsl.s'),(Math.random() * (0.9 - 0.1) + 0.1) + modifier*0.05).hex()
       };
 
         const generateAnalogous = (baseColor, modifier) => {
             const base = chroma(baseColor);
-            const hue = base.get('hsl.h') + (modifier * 30)
-            return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
-
+            const hue = base.get('hsl.h') + (Math.random() * (1 - -1) + -1) * 30 * modifier ;
+           return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
       };
 
     const generateComplementary = (baseColor, modifier) => {
@@ -153,48 +152,48 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                 if (color.locked) {
                     return color;
                 } else {
-                    let hue = undefined;
-
-                    if (lockedColors.length > 0) {
-                         const lockedColorsHues = lockedColors.map(color => chroma(color.hex).get('hsl.h'));
-                        // Generate a random hue from the locked hues (or a random hue if there are no locked colors)
-                        const randomHueIndex = Math.floor(Math.random() * lockedColorsHues.length);
-                         hue = lockedColorsHues[randomHueIndex]
-                          const modifier =  (Math.random() * (1 - 0) + 0)
-                          hue = hue + modifier
-                    }
-                    let hex = undefined;
-                   if (selectedGenerationMethod === "Auto") {
+                   let hex = undefined;
+                    if (selectedGenerationMethod === "Auto") {
+                        let hue = undefined;
+                        if (lockedColors.length > 0) {
+                            const lockedColorsHues = lockedColors.map(color => chroma(color.hex).get('hsl.h'));
+                            const randomHueIndex = Math.floor(Math.random() * lockedColorsHues.length);
+                            hue = lockedColorsHues[randomHueIndex]
+                            const modifier = (Math.random() * (60 - -60) + -60)
+                            hue = hue + modifier
+                        }
                            if (hue) {
-                             hex = chroma.hsl(hue , chroma(randomColor()).get('hsl.s') , chroma(randomColor()).get('hsl.l')).hex();
-                        } else {
-                            hex = randomColor()
-                        }
-                    } else {
-                        const baseColor = lockedColors.length > 0 ? lockedColors[0].hex : randomColor();
-                       switch (selectedGenerationMethod) {
-                            case 'Monochromatic':
-                             hex = generateMonochromatic(baseColor, index)
-                               break;
-                            case 'Analogous':
-                                 hex = generateAnalogous(baseColor, index)
-                                break;
-                            case 'Complementary':
-                                 hex = generateComplementary(baseColor, index)
-                                break;
-                            case 'Split Complementary':
-                                  hex = generateSplitComplementary(baseColor, index)
-                                break;
-                            case 'Triadic':
-                                 hex = generateTriadic(baseColor, index)
-                                break;
-                            case 'Tetradic':
-                                 hex = generateTetradic(baseColor, index)
-                                break;
-                            default:
+                                hex = chroma.hsl(hue , chroma(randomColor()).get('hsl.s') , chroma(randomColor()).get('hsl.l')).hex();
+                            } else {
                                 hex = randomColor()
-                        }
-                    }
+                            }
+                    } else {
+                           const baseColor = lockedColors.length > 0 ? lockedColors[0].hex : randomColor();
+                               let modifier = (Math.random() * (1 - -1) + -1)
+                               switch (selectedGenerationMethod) {
+                                    case 'Monochromatic':
+                                        hex = generateMonochromatic(baseColor, modifier)
+                                     break;
+                                    case 'Analogous':
+                                         hex = generateAnalogous(baseColor,modifier);
+                                        break;
+                                    case 'Complementary':
+                                        hex = generateComplementary(baseColor,index);
+                                        break;
+                                    case 'Split Complementary':
+                                          hex = generateSplitComplementary(baseColor,index);
+                                         break;
+                                    case 'Triadic':
+                                          hex = generateTriadic(baseColor,index);
+                                        break;
+                                    case 'Tetradic':
+                                       hex = generateTetradic(baseColor,index);
+                                        break;
+                                    default:
+                                        hex = randomColor()
+                                }
+                            }
+
                      const name = await getNearestColorName(hex);
                     const textColor = getContrastColor(hex);
                     return { hex, name, textColor, locked: false };

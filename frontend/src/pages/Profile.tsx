@@ -335,7 +335,7 @@ const Profile: React.FC<ProfileProps> = ({ setNotification }) => {
 
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div className='laoder-container'> <img className='loader' src="/src/assets/Loading Gif.gif" alt="" /></div>;
     }
 
     if (error) {

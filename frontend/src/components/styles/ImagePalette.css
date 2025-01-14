@@ -1,0 +1,94 @@
+.imagePaletteContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.imageContainer {
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.imageContainer img{
+    border-radius: 16px;
+    overflow: hidden;
+    width: 400px;
+     height: 400px;
+    object-fit: cover;
+}
+.colorDot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff; /* white border */
+    cursor: pointer;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.sliderLabel {
+    margin-right: 10px;
+}
+
+.colorSlider {
+    flex: 1;
+    width: 200px; /* Or whatever fits your layout */
+}
+
+.paletteContainer {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.colorBox {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+}
+.browseImageButton {
+    padding: 10px 15px;
+    border: none;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark text color */
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+     transition: background-color 0.2s ease;
+        border: 1px solid #ddd;
+}
+
+.browseImageButton:hover {
+     background-color: #e0e0e0; /* Slightly darker gray on hover */
+}
+
+.browseImageButton input[type="file"] {
+    display: none;
+}
+
+.browseImageButton span {
+  display: inline-flex; /* Align text and icon */
+  align-items: center; /* Center items vertically */
+  gap: 8px; /* Space between text and icon */
+}
+.exportButton {
+    padding: 10px 15px;
+    border: none;
+    background-color: #4629ef;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+     transition: background-color 0.2s ease;
+}
+
+.exportButton:hover {
+      background-color: #3520b5;
+}
