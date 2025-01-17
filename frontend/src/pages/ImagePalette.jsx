@@ -8,16 +8,42 @@ import chroma from "chroma-js";
 const ImagePalette = ({ setNotification }) => {
   const [image, setImage] = useState(
     "https://images.unsplash.com/photo-1502691876148-a84978e59af8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  ); // Default image URL
+  );
   const [palette, setPalette] = useState([]);
   const [dots, setDots] = useState([]);
   const [sliderValue, setSliderValue] = useState(0);
   const imageRef = useRef(null);
-  const colorThiefRef = useRef(new ColorThief());
   const [isDragging, setIsDragging] = useState(false);
   const [activeDotIndex, setActiveDotIndex] = useState(null);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [loading, setLoading] = useState(false);
+  const workerRef = useRef(null);
+
+  useEffect(() => {
+    // Create Web Worker on component mount
+    workerRef.current = new Worker(new URL("../workers/imageWorker.js", import.meta.url));
+
+    workerRef.current.onmessage = (event) => {
+      const { type, palette, dots } = event.data;
+
+      if (type === "result") {
+        setPalette(palette);
+        setDots(dots);
+        setLoading(false);
+      }
+    };
+
+    return () => {
+      // Terminate Web Worker on component unmount
+      workerRef.current.terminate();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (image && !loading) {
+      extractColors();
+    }
+  }, [image]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -26,7 +52,6 @@ const ImagePalette = ({ setNotification }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
-        setLoading(false);
       };
       reader.readAsDataURL(file);
     }
@@ -34,105 +59,41 @@ const ImagePalette = ({ setNotification }) => {
 
   const extractColors = async () => {
     if (!imageRef.current) return;
+    setLoading(true);
+
     const img = imageRef.current;
-    const colorThief = colorThiefRef.current;
-    try {
-      if (img.complete) {
-        const colorPalette = colorThief.getPalette(img, 5);
-        if (colorPalette) {
-          const hexPalette = colorPalette.map((color) => chroma(color).hex());
-          setPalette(hexPalette);
-          const initialDots = hexPalette.map(() => ({ x: 0, y: 0 }));
-          setDots(initialDots);
-        }
+
+    // Downsample the image before sending to the worker
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const MAX_DIMENSION = 256; // Adjust as needed
+
+    let newWidth = img.width;
+    let newHeight = img.height;
+
+    if (img.width > MAX_DIMENSION || img.height > MAX_DIMENSION) {
+      if (img.width > img.height) {
+        newWidth = MAX_DIMENSION;
+        newHeight = (img.height * MAX_DIMENSION) / img.width;
+      } else {
+        newHeight = MAX_DIMENSION;
+        newWidth = (img.width * MAX_DIMENSION) / img.height;
       }
-    } catch (error) {
-      console.log("error on image extraction", error);
-      setPalette([]);
     }
-    setLoading(false);
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+    const imageData = canvas.toDataURL(); // Get base64 encoded image data
+
+    workerRef.current.postMessage({
+      type: "extract",
+      imageData: imageData,
+      imageWidth: newWidth, // Pass new dimensions
+      imageHeight: newHeight,
+    });
   };
-
-  useEffect(() => {
-    if (image && !loading) {
-      extractColors();
-    }
-  }, [image]);
-
-  useEffect(() => {
-    const calculateColorDistance = (color1, color2) => {
-      return chroma.deltaE(color1, color2);
-    };
-    const findDominantRegion = (regions, color) => {
-      let minDistance = Infinity;
-      let dominantRegionIndex = 0;
-
-      regions.forEach((regionColor, index) => {
-        const distance = calculateColorDistance(regionColor, color);
-        if (distance < minDistance) {
-          minDistance = distance;
-          dominantRegionIndex = index;
-        }
-      });
-
-      return dominantRegionIndex;
-    };
-    if (imageRef.current && palette.length > 0 && imageRef.current.complete) {
-      const imgElement = imageRef.current;
-      const imageWidth = imgElement.offsetWidth;
-      const imageHeight = imgElement.offsetHeight;
-
-      const numRegionsX = 5;
-      const numRegionsY = 5;
-      const regionWidth = imageWidth / numRegionsX;
-      const regionHeight = imageHeight / numRegionsY;
-
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-      canvas.width = imgElement.naturalWidth;
-      canvas.height = imgElement.naturalHeight;
-      context.drawImage(imgElement, 0, 0);
-
-      // Calculate average color of each region
-      const regionColors = [];
-      for (let y = 0; y < numRegionsY; y++) {
-        for (let x = 0; x < numRegionsX; x++) {
-          const imageData = context.getImageData(
-            Math.floor((x * regionWidth * canvas.width) / imageWidth),
-            Math.floor((y * regionHeight * canvas.height) / imageHeight),
-            Math.floor((regionWidth * canvas.width) / imageWidth),
-            Math.floor((regionHeight * canvas.height) / imageHeight)
-          );
-          const avgColor = chroma
-            .average(
-              [...Array(imageData.data.length / 4)].map((_, i) =>
-                chroma(
-                  imageData.data[i * 4],
-                  imageData.data[i * 4 + 1],
-                  imageData.data[i * 4 + 2]
-                ).hex()
-              )
-            )
-            .hex();
-          regionColors.push(avgColor);
-        }
-      }
-
-      // Find the dominant region for each palette color
-      const newDots = palette.map((color) => {
-        const dominantRegionIndex = findDominantRegion(regionColors, color);
-        const regionX = dominantRegionIndex % numRegionsX;
-        const regionY = Math.floor(dominantRegionIndex / numRegionsX);
-
-        const x = regionX * regionWidth + regionWidth / 2;
-        const y = regionY * regionHeight + regionHeight / 2;
-
-        return { x, y };
-      });
-
-      setDots(newDots);
-    }
-  }, [palette, image]);
 
   const handleSliderChange = (e) => {
     setSliderValue(parseInt(e.target.value));
@@ -188,7 +149,6 @@ const ImagePalette = ({ setNotification }) => {
 
       setDots(newDots);
 
-      const colorThief = colorThiefRef.current;
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
       canvas.width = imgElement.naturalWidth;
@@ -210,6 +170,7 @@ const ImagePalette = ({ setNotification }) => {
       }
     }
   };
+
   const handleExport = () => {
     copy(palette.join(", "));
     setNotification({
