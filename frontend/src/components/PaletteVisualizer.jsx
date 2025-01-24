@@ -15,105 +15,69 @@ const PaletteVisualizer = ({ palette }) => { // <-- This is now just PaletteVisu
   const color5 = palette[4];
 
   return (
-    <div className="paletteVisualizerContainer dashboardLayout">
-            <aside className="dashSidebar" style={{ backgroundColor: color1, color: color5 }}> {/* Sidebar BG from palette */}
-                <button className="dashItem userProfile" style={{ color: color5 }}> {/* User Profile Button */}
-                    <MdAccountCircle /> Cool User <MdVisibility className="moreIcon" />
-                </button>
-                <button className="dashItem selected" style={{ color: color5 }}> {/* Selected "Overview" Button */}
-                    <MdDashboard /> Overview
-                </button>
-                <button className="dashItem" style={{ color: color5 }}> {/* Other Navigation Buttons */}
-                    <MdVisibility /> Palettes
-                </button>
-                <button className="dashItem" style={{ color: color5 }}>
-                    <MdSettings /> Settings
-                </button>
-                {/* Add more sidebar items as needed */}
-            </aside>
+    <div className="paletteVisualizerContainer dashboardLayout"> {/* Added dashboardLayout class */}
+            <header className="visualizerHeader dashboardHeader" style={{ backgroundColor: color1, color: color5 }}> {/* Header BG from palette */}
+                <div className="logo" style={{ color: color5 }}>NexaVerse</div> {/* Logo Text */}
+            </header>
 
-            <main className="visualizerMainContent dashboardMainContent">
-                <div className="cardRow">
-                    <section className="dashboardCard tileFirstRowCol1 card secondaryColorBox" style={{ backgroundColor: color5, borderColor: color2 }}> {/* Card BG and Accent Border */}
-                        <p className="dashRow" style={{ color: color3 }}>New palettes <MdVisibility className="moreIcon" /></p> {/* Dark Text, Icon */}
-                        <h4 style={{ color: color4 }}>150,040</h4> {/* Highlight Color for Number */}
-                        <p className="dashRow trendUp" style={{ color: color3 }}><MdVisibility /> +40%</p> {/* Dark Text, Icon */}
-                    </section>
+            <main className="visualizerMainContent dashboardMainContent"> {/* Added dashboardMainContent class */}
+                <div className="cardRow"> {/* Row 1: Dashboard Card + Placeholder */}
+                    <section className="dashboardCard card" style={{ backgroundColor: 'white' }}> {/* Card BG from palette */}
+                        <h2 style={{ color: color3 }}>Dashboard</h2> {/* Dark Text for Dashboard Title */}
+                        <div className="dashboardMetrics">
+                            <div className="metricBox" style={{ backgroundColor: color2, color: color5 }}> {/* Accent Color Boxes */}
+                                <h3>Current MRR</h3>
+                                <span className="metricValue" style={{ color: color4 }}>$12.4k</span> {/* Highlight Color for Value */}
+                            </div>
+                            <div className="metricBox" style={{ backgroundColor: color2, color: color5 }}>
+                                <h3>Current Customers</h3>
+                                <span className="metricValue" style={{ color: color4 }}>16,601</span>
+                            </div>
+                            <div className="metricBox" style={{ backgroundColor: color2, color: color5 }}>
+                                <h3>Active Customers</h3>
+                                <span className="metricValue" style={{ color: color4 }}>33%</span>
+                            </div>
+                            <div className="metricBox" style={{ backgroundColor: color2, color: color5 }}>
+                                <h3>Churn Rate</h3>
+                                <span className="metricValue" style={{ color: color4 }}>2%</span>
+                            </div>
+                        </div>
 
-                    <section className="dashboardCard tileFirstRowCol2 card secondaryColorBox" style={{ backgroundColor: color5, borderColor: color2 }}>
-                        <p className="dashRow" style={{ color: color3 }}>Palette Views <MdVisibility className="moreIcon" /></p>
-                        <h4 style={{ color: color4 }}>300</h4>
-                        <p className="dashRow trendUp" style={{ color: color3 }}><MdVisibility /> +30%</p>
-                    </section>
-
-                    <section className="dashboardCard tileFirstRowCol3 card secondaryColorBox" style={{ backgroundColor: color5, borderColor: color2 }}>
-                        <p className="dashRow" style={{ color: color3 }}>Saved Palettes <MdImage className="moreIcon" /></p>
-                        <h4 style={{ color: color4 }}>$2,340</h4>
-                        <p className="dashRow trendUp" style={{ color: color3 }}><MdVisibility /> +25%</p>
-                    </section>
-
-                    <section className="dashboardCard tileFirstRowCol4 card secondaryColorBox" style={{ backgroundColor: color5, borderColor: color2 }}>
-                        <p className="dashRow" style={{ color: color3 }}>Exported palettes <MdSaveAlt className="moreIcon" /></p>
-                        <h4 style={{ color: color4 }}>42%</h4>
-                        <p className="dashRow trendUp" style={{ color: color3 }}><MdVisibility /> +12%</p>
-                    </section>
-                </div>
-
-                <div className="cardRow">
-                    <section className="chartTile tileSecondRowCol1 fadeColorBox card" style={{ backgroundColor: color5, borderColor: color2 }}> {/* Faded BG Card */}
-                        <p className="dashRow" style={{ color: color3 }}>Palette Views / Exports <MdVisibility className="moreIcon" /></p>
-                        {/* Placeholder Chart - Using Color Blocks */}
-                        <div className="chartBars">
-                            <div className="chartBar" style={{ height: '60%', backgroundColor: color2 }} /> {/* Accent Color for Bars */}
-                            <div className="chartBar" style={{ height: '75%', backgroundColor: color2 }} />
-                            <div className="chartBar" style={{ height: '40%', backgroundColor: color2 }} />
-                            <div className="chartBar" style={{ height: '90%', backgroundColor: color2 }} />
-                            <div className="chartBar" style={{ height: '65%', backgroundColor: color2 }} />
-                            <div className="chartBar" style={{ height: '80%', backgroundColor: color2 }} />
-                            <div className="chartBar" style={{ height: '50%', backgroundColor: color2 }} />
+                        <div className="trendChart"> {/* Placeholder Chart */}
+                            <h3 style={{ color: color3 }}>Trend</h3>
+                            {/* Simple Bar Chart Representation - can be replaced with a charting library */}
+                            <div className="chartBars">
+                                <div className="chartBar" style={{ height: '60%', backgroundColor: color3 }} />
+                                <div className="chartBar" style={{ height: '75%', backgroundColor: color3 }} />
+                                <div className="chartBar" style={{ height: '40%', backgroundColor: color3 }} />
+                                <div className="chartBar" style={{ height: '90%', backgroundColor: color3 }} />
+                                <div className="chartBar" style={{ height: '65%', backgroundColor: color3 }} />
+                                <div className="chartBar" style={{ height: '80%', backgroundColor: color3 }} />
+                                <div className="chartBar" style={{ height: '50%', backgroundColor: color3 }} />
+                            </div>
                         </div>
                     </section>
 
-                    <section className="submitTemplateTile gradientColorBox primaryTextContrast card" style={{ backgroundImage: `linear-gradient(135deg, ${color2} 0%, ${color3} 100%)`, color: color5 }}> {/* Gradient BG Card */}
-                        <p style={{ color: color5 }}><span style={{ fontWeight: 700 }}>New:</span> Palette Visualizer Templates are here!</p>
-                        <a href="#" className="primaryButton primaryTextContrast" style={{ backgroundColor: color4, color: color5 }}>Submit Template Idea!</a> {/* Highlight Button & Light Text */}
+                    <section className="placeholderCard card" style={{ backgroundColor: 'white' }}>
+                        <h2 style={{ color: color3 }}>Card Placeholder 1</h2>
+                        <p style={{ color: color3 }}>Content for card 1 will go here.</p>
                     </section>
                 </div>
 
-                <div className="cardRow">
-                    <section className="recentTicketsTile fadeColorBox card" style={{ backgroundColor: color5, borderColor: color2 }}> {/* Faded BG Card */}
-                        <p className="dashRow" style={{ color: color3 }}>Recent Tickets <MdVisibility className="moreIcon" /></p>
-                        <div className="ticketRow">
-                            <p style={{ fontWeight: 700, color: color3 }}>Feature Request: More Color Export Options</p>
-                            <p className="status" style={{ color: color3 }}><span className="statusLight" style={{ backgroundColor: color2 }}></span> Open</p> {/* Accent Color for Status Light */}
-                        </div>
-                        <div className="ticketRow">
-                            <p style={{ fontWeight: 700, color: color3 }}>Bug Report: Slider not working in Firefox</p>
-                            <p className="status" style={{ color: color3 }}><span className="statusLight" style={{ backgroundColor: color3 }}></span> Pending</p> {/* Dark Text Color for Status Light */}
-                        </div>
-                        <div className="ticketRow">
-                            <p style={{ fontWeight: 700, color: color3 }}>Improve Dot Drag Performance</p>
-                            <p className="status" style={{ color: color3 }}><span className="statusLight" style={{ backgroundColor: color2 }}></span> Closed</p> {/* Accent Color for Status Light */}
-                        </div>
+                <div className="cardRow"> {/* Row 2: Two Placeholder Cards */}
+                    <section className="placeholderCard card" style={{ backgroundColor: color5 }}>
+                        <h2 style={{ color: color3 }}>Card Placeholder 2</h2>
+                        <p style={{ color: color3 }}>Content for card 2 will go here.</p>
                     </section>
-
-                    <section className="topCategoriesTile fadeColorBox card" style={{ backgroundColor: color5, borderColor: color2 }}> {/* Faded BG Card */}
-                        <h2 style={{ color: color3 }}>Top Categories</h2>
-                        <div className="categoryRow">
-                            <p style={{ borderBottomColor: color2 }}>Development</p> {/* Accent Color for Category Bars */}
-                        </div>
-                        <div className="categoryRow">
-                            <p style={{ borderBottomColor: color3, width: '80%' }}>Web Design</p> {/* Dark Text Color for Category Bars */}
-                        </div>
-                        <div className="categoryRow">
-                            <p style={{ borderBottomColor: color2, width: '60%' }}>Graphic Design</p> {/* Accent Color for Category Bars */}
-                        </div>
+                    <section className="placeholderCard card" style={{ backgroundColor: color5 }}>
+                        <h2 style={{ color: color3 }}>Card Placeholder 3</h2>
+                        <p style={{ color: color3 }}>Content for card 3 will go here.</p>
                     </section>
                 </div>
             </main>
 
-            <footer className="visualizerFooter dashboardFooter" style={{ backgroundColor: color1, color: color5 }}>
-                <p style={{ color: color5 }}>© 2025 Colorly Dashboard - Palette Visualization</p>
+            <footer className="visualizerFooter dashboardFooter" style={{ backgroundColor: color1, color: color5 }}> {/* Footer BG from palette */}
+                <p style={{ color: color5 }}>© 2025 NexaVerse Dashboard Preview</p> {/* Light Text for Footer */}
             </footer>
         </div>
   );
