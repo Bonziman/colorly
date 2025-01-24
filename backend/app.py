@@ -12,6 +12,13 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os, re, jwt
 import json
+from PIL import Image
+from colorthief import ColorThief
+import io
+import requests
+import colorsys
+import numpy as np
+import random
 
 # Folder where profile pictures will be stored
 UPLOAD_FOLDER = 'uploads/profile_pictures'
@@ -28,6 +35,10 @@ if not os.path.exists(UPLOAD_FOLDER):
 # Helper function to check file extensions
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+
 
 # creating the app inside a function to avoid circular import issues
 def create_app():
@@ -51,6 +62,10 @@ def create_app():
     
     jwt = JWTManager(app)
 
+    # Default colors for initial render
+    DEFAULT_PALETTE = ["#ffffff", "#000000", "#ff0000", "#00ff00", "#0000ff"]
+    DEFAULT_DOTS =  [{ "x": 20, "y": 20, "color": "#ffffff" }, { "x": 80, "y": 20, "color": "#000000" }, { "x": 140, "y": 20, "color": "#ff0000" }, { "x": 200, "y": 20, "color": "#00ff00" }, { "x": 260, "y": 20, "color": "#0000ff" }]
+    
     from models import User
 
     
@@ -67,6 +82,97 @@ def create_app():
     @app.route('/')
     def home():
         return "Hello, Flask is working!"
+    
+    # Helper function to convert RGB to Hex (now inside create_app)
+    def rgb_to_hex(rgb):
+         return '#%02x%02x%02x' % rgb
+
+    # Helper function to calculate initial dot positions (improved logic)
+    def calculate_dot_positions(image, palette):
+        width, height = image.size
+        dots = []
+        SAMPLE_SIZE = 200  # Set a number of pixels to sample
+        # Ensure image is in RGBA format
+        temp_image = image.convert("RGBA")
+        pixel_array = np.array(temp_image)
+
+        for color_hex in palette:
+            # Convert hex to RGB
+            rgb_color = tuple(int(color_hex[i:i+2], 16) for i in (1, 3, 5))
+            rgb_array = np.array(rgb_color)
+
+              # Find all matching pixels
+            matching_pixels = np.where(np.all(pixel_array[:, :, :3] == rgb_array, axis=2))
+
+            if matching_pixels[0].size > 0:
+                  # Get the positions of the matching pixels
+                  x_positions = matching_pixels[1]
+                  y_positions = matching_pixels[0]
+                  
+                  # Randomly sample pixels based on their matching count
+                  if x_positions.size <= SAMPLE_SIZE:
+                    # If few pixels just use the coordinates directly
+                    random_index = random.choice(range(x_positions.size))
+                    x = x_positions[random_index]
+                    y = y_positions[random_index]
+
+                  else:
+                    # Get random samples if there are more than the required sample size
+                    random_indices = random.sample(range(x_positions.size), SAMPLE_SIZE)
+                    
+                    sampled_x_positions = x_positions[random_indices]
+                    sampled_y_positions = y_positions[random_indices]
+                    
+                    # get a random pixel from sampled
+                    random_index = random.choice(range(SAMPLE_SIZE))
+                    x = sampled_x_positions[random_index]
+                    y = sampled_y_positions[random_index]
+
+
+                  dots.append({'x': int(x), 'y': int(y), 'color': color_hex})
+            else:
+              # Fallback: distribute dots evenly if no matching pixels are found
+              index = palette.index(color_hex)
+              x = (width / (len(palette) + 1)) * (index + 1)
+              y = height / 2
+              dots.append({'x': x, 'y': y, 'color': color_hex})
+
+        return dots
+    
+    # Endpoint to extract color palette from image
+    @app.route('/api/extract-palette', methods=['POST'])
+    def extract_palette():
+         try:
+            if 'image' in request.files:
+                # Handle file upload
+                image_file = request.files['image']
+                # Use color thief directly with file-like object
+                color_thief = ColorThief(image_file)
+            elif 'image_url' in request.form:
+                # Handle image URL
+                image_url = request.form['image_url']
+                response = requests.get(image_url, stream=True)
+                response.raw.decode_content = True
+                # Use color thief with the response's raw stream
+                color_thief = ColorThief(response.raw)
+            else:
+                 # Send initial data when no image is uploaded
+                 return jsonify({'palette': DEFAULT_PALETTE, 'dots': DEFAULT_DOTS}), 200
+
+            # Use ColorThief to extract palette
+            palette = color_thief.get_palette(color_count=5)
+            image = color_thief.image
+
+
+            # Convert palette to hex (now using the helper function within create_app)
+            hex_palette = [rgb_to_hex(color) for color in palette]
+            dots = calculate_dot_positions(image, hex_palette)
+            return jsonify({'palette': hex_palette, 'dots': dots})
+
+         except Exception as e:
+             print(f"Error extracting palette: {e}")
+             return jsonify({'error': str(e)}), 500
+
 
     # Test db route
     @app.route('/debug/db')

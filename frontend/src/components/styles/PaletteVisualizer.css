@@ -1,0 +1,128 @@
+/* General Dashboard Layout Styles */
+.dashboardLayout {
+    font-family: 'Roboto', sans-serif; /* Modern font */
+    background-color: #f0f2f5; /* Light background for overall dashboard */
+    color: #333;
+    padding: 25px;
+}
+
+.dashboardHeader {
+    padding: 20px 0;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.dashboardFooter {
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #ddd; /* Light footer text */
+}
+
+
+.dashboardMainContent {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Spacing between rows */
+}
+
+.cardRow {
+    display: flex;
+    gap: 25px; /* Spacing between cards in a row */
+}
+
+.card {
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06); /* Softer shadow */
+    flex: 1; /* Equal width cards */
+    min-width: 300px; /* Minimum card width */
+}
+
+
+/* Dashboard Card Specific Styles */
+.dashboardCard {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboardCard h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: left; /* Align dashboard title left */
+}
+
+.dashboardMetrics {
+    display: flex;
+    flex-wrap: wrap; /* Allow metrics to wrap on smaller screens */
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.metricBox {
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+    flex: 1 1 150px; /* Flex basis, grow, shrink */
+    min-width: 150px;
+}
+
+.metricBox h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: normal; /* Lighter font weight for metric titles */
+    color: #eee; /* Light metric title text */
+}
+
+.metricValue {
+    font-size: 2rem;
+    font-weight: bold; /* Bold metric values */
+    display: block; /* Ensure value takes full width */
+}
+
+
+/* Trend Chart Styles (Placeholder) */
+.trendChart {
+    text-align: left;
+}
+
+.trendChart h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.chartBars {
+    display: flex;
+    align-items: flex-end; /* Align bars to the bottom */
+    gap: 8px;
+    height: 150px; /* Fixed height for the chart area */
+    background-color: #eee; /* Light gray chart background */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.chartBar {
+    width: 20px;
+    background-color: #666; /* Default bar color, can be adjusted */
+    border-radius: 3px 3px 0 0; /* Rounded top corners */
+}
+
+
+/* Placeholder Card Styles */
+.placeholderCard h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.placeholderCard p {
+    line-height: 1.6;
+    color: #777; /* Muted placeholder text */
+}
+
+
+/* General Card Styles (applied to all cards) */
+.card h2 {
+    font-weight: 600;
+    margin-top: 0;
+}

@@ -259,6 +259,18 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         }
     };
 
+    const handleViewPalette = () => {
+        if (palette.length > 0) {
+            const hexPalette = palette.map(color => color.hex);
+            const paletteString = hexPalette.join(',');
+            const encodedPaletteString = encodeURIComponent(paletteString); // <---- ENCODE HERE
+            const visualizerUrl = `/palette-visualizer?palette=${encodedPaletteString}`; // Use encoded string
+            window.open(visualizerUrl, '_blank');
+        } else {
+            alert("Generate a palette first!");
+        }
+    };
+
     const handleSavePalette = async () => {
         if (!paletteName) {
             alert("Please provide a name for the palette.");
@@ -331,7 +343,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         {
             icon: faEye,
             tooltip: "View",
-            action: () => alert("implementing view...")
+            action: handleViewPalette 
         },
         {
             icon: faShareAlt,

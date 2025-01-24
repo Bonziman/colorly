@@ -5,90 +5,101 @@
   padding: 20px;
 }
 
-.imageContainer {
-  position: relative;
-  margin-bottom: 20px;
-  border-radius: 16px;
-  overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.imageContainer img{
-    border-radius: 16px;
-    overflow: hidden;
-    width: 400px;
-     height: 400px;
-    object-fit: cover;
-}
+
 .colorDot {
     position: absolute;
-    width: 20px;
-    height: 20px;
+     width: 1.2rem;
+    height: 1.2rem;
     border-radius: 50%;
-    border: 2px solid #fff; /* white border */
-    cursor: pointer;
+    border: 2px solid #fff;
+    cursor: grab;
      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  }
+     transform: translate(-50%, -50%); /* to center the color dots */
+}
+
 
 .sliderContainer {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
+
 .sliderLabel {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .colorSlider {
-    flex: 1;
-    width: 200px; /* Or whatever fits your layout */
+  flex: 1;
+  width: 200px;
 }
 
 .paletteContainer {
-    display: flex;
-    margin-bottom: 20px;
-    align-items: center;
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
 }
 
 .colorBox {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #ddd;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
 }
+
 .browseImageButton {
     padding: 10px 15px;
     border: none;
-    background-color: #f0f0f0; /* Light gray background */
-    color: #333; /* Dark text color */
+    background-color: #f0f0f0;
+    color: #333;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
-     transition: background-color 0.2s ease;
-        border: 1px solid #ddd;
+    transition: background-color 0.2s ease;
+    border: 1px solid #ddd;
 }
 
+
 .browseImageButton:hover {
-     background-color: #e0e0e0; /* Slightly darker gray on hover */
+  background-color: #e0e0e0;
 }
 
 .browseImageButton input[type="file"] {
-    display: none;
+  display: none;
 }
 
 .browseImageButton span {
-  display: inline-flex; /* Align text and icon */
-  align-items: center; /* Center items vertically */
-  gap: 8px; /* Space between text and icon */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
+
 .exportButton {
-    padding: 10px 15px;
-    border: none;
-    background-color: #4629ef;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-     transition: background-color 0.2s ease;
+  padding: 10px 15px;
+  border: none;
+  background-color: #4629ef;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+   transition: background-color 0.2s ease;
 }
 
 .exportButton:hover {
-      background-color: #3520b5;
+  background-color: #3520b5;
+}
+
+.imageContainer {
+  display: inline-block; /* to allow the container to be wrapped */
+  position: relative;  /* to use as reference for the absolute positioned dots */
+  justify-content: center;
+  align-items: center;
+  max-width: 80%;
+  max-height: 80vh;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.imageContainer img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
 }

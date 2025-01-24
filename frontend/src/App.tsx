@@ -11,6 +11,7 @@ import ColorGenerator from "./pages/ColorGenerator"; // New Color Generator page
 import PaletteGenerator from "./pages/PaletteGenerator";
 import Notification from "./components/Notification";
 import ImagePalette from "./pages/ImagePalette"; // Import ImagePalette component
+import PaletteVisualizerPage from './components/PaletteVisualizer';
 
 import "./App.css";
 import Profile from "./pages/Profile";
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/palette-generator" element={<PaletteGenerator setNotification={setNotification} />} />
             <Route path="/profile" element={<Profile setNotification={setNotification} />} />
             <Route path="/image-palette" element={<ImagePalette setNotification={setNotification} />}  />
+            <Route path="/palette-visualizer" element={<PaletteVisualizerPage />} />
           </Routes>
 
           {notification.message && (
