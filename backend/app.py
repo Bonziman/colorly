@@ -45,21 +45,28 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
 
+    # Database Configuration
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mydatabase.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # Secure app configurations
     app.config['SECRET_KEY'] = 'your-secret-key'
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    
+    # Setting permanent session time
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+    # Path for where to save the uploaded files
     app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads/profile_pictures')
+    # Setting Max file size
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size (16 MB)
     # Set the path for the profile pictures folder
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads/profile_pictures')
 
-
+    # Initialize Flask extensions
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'login'  # Redirect here if the user is not logged in
     
+    # Initialize JWT manager
     jwt = JWTManager(app)
 
     # Default colors for initial render
@@ -83,11 +90,11 @@ def create_app():
     def home():
         return "Hello, Flask is working!"
     
-    # Helper function to convert RGB to Hex (now inside create_app)
+    # Helper function to convert RGB to Hex
     def rgb_to_hex(rgb):
          return '#%02x%02x%02x' % rgb
 
-    # Helper function to calculate initial dot positions (improved logic)
+    # Helper function to calculate initial dot positions
     def calculate_dot_positions(image, palette):
         width, height = image.size
         dots = []
@@ -142,7 +149,11 @@ def create_app():
     # Endpoint to extract color palette from image
     @app.route('/api/extract-palette', methods=['POST'])
     def extract_palette():
-         try:
+        """
+        Extracts a color palette from an uploaded image, also generates interactive color dots on the image.
+        If there is no image, the method will send the default palette and dots.
+        """
+        try:
             if 'image' in request.files:
                 # Handle file upload
                 image_file = request.files['image']
@@ -169,7 +180,7 @@ def create_app():
             dots = calculate_dot_positions(image, hex_palette)
             return jsonify({'palette': hex_palette, 'dots': dots})
 
-         except Exception as e:
+        except Exception as e:
              print(f"Error extracting palette: {e}")
              return jsonify({'error': str(e)}), 500
 
@@ -200,9 +211,10 @@ def create_app():
             }), 200
         else:
             return jsonify({"error": "User not found"}), 404
-          
+    
+    # Upload profile picture route     
     @app.route('/upload_profile_picture', methods=['POST'])
-    @jwt_required()  # Ensure the user is authenticated
+    @jwt_required() 
     def upload_profile_picture():
         user_id = get_jwt_identity()  # Get user ID from JWT token
         user = User.query.get(user_id)
@@ -226,7 +238,8 @@ def create_app():
             return jsonify({"message": "Profile picture uploaded successfully!", "profile_picture": filepath}), 200
 
         return jsonify({"error": "Invalid file type. Only PNG, JPG, JPEG, and GIF are allowed."}), 400
-          
+     
+     # Serve profile picture route     
     @app.route('/uploads/profile_pictures/<filename>')
     def serve_profile_picture(filename):
         return send_from_directory(UPLOAD_FOLDER, filename)
@@ -238,6 +251,7 @@ def create_app():
     #register route
     @app.route('/register', methods=['POST'])
     def register():
+        """Registers a new user with username, email and password, and an optional profile picture."""
         # Get form data
         username = request.form.get('username')
         email = request.form.get('email')
@@ -273,6 +287,7 @@ def create_app():
 
     @app.route('/login', methods=['POST'])
     def login_user():
+        """Authenticates a user with email and password and returns a JWT token on successful login."""
         data = request.get_json()
 
         email = data.get('email')
@@ -293,6 +308,7 @@ def create_app():
     @app.route('/logout', methods=['POST'])
     @jwt_required()  # Ensure the user is authenticated before logging out
     def logout():
+        """Logs out a user."""
         return jsonify({"message": "Successfully logged out"}), 200
 
 
@@ -304,6 +320,7 @@ def create_app():
     @app.route('/colors', methods=['POST'])
     @jwt_required()  # Ensures the user must be authenticated
     def create_color():
+        """Creates and saves a color associated with the authenticated user."""
         try:
             data = request.get_json()
 
@@ -385,9 +402,7 @@ def create_app():
         user_data = {
             'id': user.id,
             'username': user.username,
-            'email': user.email,
-            # ... other basic fields ...
-            # Do NOT include colors and palettes here
+            'email': user.email,      
         }
 
         return jsonify(user_data), 200

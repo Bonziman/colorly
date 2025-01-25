@@ -4,6 +4,45 @@ import copy from "copy-to-clipboard";
 import { MdImage, MdSaveAlt } from "react-icons/md";
 import chroma from "chroma-js";
 
+/**
+ * ImagePalette Component
+ * 
+ * This component allows users to upload an image, extract a color palette from it, and interact with the palette.
+ * Users can adjust the palette using a slider and export the palette to the clipboard.
+ * 
+ * Props:
+ * - None
+ * 
+ * State:
+ * - image: The uploaded image file or URL.
+ * - palette: Array of colors extracted from the image.
+ * - dots: Array of dot positions corresponding to the colors in the palette.
+ * - sliderValue: Value of the slider used to adjust the palette.
+ * - isDragging: Boolean indicating if a dot is being dragged.
+ * - activeDotIndex: Index of the currently active dot.
+ * - dragStart: Coordinates where the drag started.
+ * - loading: Boolean indicating if the image is being processed.
+ * - notification: Object containing message and duration for notifications.
+ * 
+ * Refs:
+ * - imageRef: Reference to the image element.
+ * - imageContainerRef: Reference to the image container element.
+ * - fileInputRef: Reference to the hidden file input element.
+ * - colorThiefRef: Reference to the ColorThief instance.
+ * 
+ * Functions:
+ * - handleImageChange: Handles the image upload and triggers color extraction.
+ * - extractColors: Extracts colors from the uploaded image using the server API.
+ * - handleSliderChange: Updates the slider value.
+ * - updatePaletteFromSlider: Adjusts the palette based on the slider value.
+ * - handleMouseDown: Initiates dragging of a dot.
+ * - handleMouseUp: Ends dragging of a dot.
+ * - handleMouseMove: Updates the position of a dot while dragging.
+ * - handleExport: Copies the palette to the clipboard.
+ * - triggerFileInput: Triggers the hidden file input element.
+ * 
+ */
+
 const ImagePalette = ({ setNotification }) => {
     const [image, setImage] = useState(
         "https://images.unsplash.com/photo-1502691876148-a84978e59af8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
