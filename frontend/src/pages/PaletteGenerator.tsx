@@ -409,7 +409,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
     const toolbarItems = [
         {
             icon: faCamera,
-            tooltip: "Camera",
+            tooltip: "Downloade Palette Image",
             action: downloadPaletteImage
         },
         {
@@ -417,16 +417,8 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
             tooltip: "Generate",
             action: generatePalette
         },
-        {
-            icon: faGripHorizontal,
-            tooltip: "Grip",
-            action: () => alert("implementing grip...")
-        },
-        {
-            icon: faSun,
-            tooltip: "Sun",
-            action: () => alert("implementing sun...")
-        },
+        
+        
         {
             icon: faEye,
             tooltip: "View",
@@ -441,11 +433,6 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
             icon: faPalette,
             tooltip: "Generation method",
             action: () => setShowGenerationModal(true)
-        },
-        {
-            icon: faBars,
-            tooltip: "Settings",
-            action: () => alert("implementing settings...")
         },
     ];
     const generationMethods = [

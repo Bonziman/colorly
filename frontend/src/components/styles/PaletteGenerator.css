@@ -123,7 +123,7 @@
 }
 
 .modal input {
-    width: 100%;
+
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -134,7 +134,9 @@
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    gap: 10px;
 }
+
 
 button {
     padding: 8px 12px;
