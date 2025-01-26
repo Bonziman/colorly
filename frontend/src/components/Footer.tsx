@@ -1,7 +1,13 @@
 import React from 'react';
 import SubscriptionForm from './SubscriptionForm';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+  const tools = [
+    { name: "Color Generator", path: "/color-generator" },
+    { name: "Palette Generator", path: "/palette-generator" },
+    { name: "Image Palette", path: "/image-palette" },
+  ];
   return (
     <footer style={styles.footerContainer}>
       <div style={styles.sectionContainer}>
@@ -12,57 +18,38 @@ const Footer: React.FC = () => {
           <SubscriptionForm />
         </div>
 
-        {/* Information Links */}
-        <div style={styles.column}>
-          <h3>Information</h3>
-          <ul style={styles.linkList}>
-            <li>About Us</li>
-            <li>More Search</li>
-            <li>Blog</li>
-            <li>Testimonials</li>
-            <li>Events</li>
-          </ul>
-        </div>
+        
 
         {/* Helpful Links */}
-        <div style={styles.column}>
-          <h3>Helpful Links</h3>
-          <ul style={styles.linkList}>
-            <li>Services</li>
-            <li>Supports</li>
-            <li>Terms & Condition</li>
-            <li>Privacy Policy</li>
+        <div className='tools' style={styles.column}>
+          <h3>Tools</h3>
+          <ul tools-list>
+            {tools.map(tool => (
+              <li key={tool.name}>
+                <Link to={tool.path} style={{textDecoration: "none", color:"#555", fontSize: "0.95rem"}}>{tool.name}</Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Our Services */}
-        <div style={styles.column}>
-          <h3>Our Services</h3>
-          <ul style={styles.linkList}>
-            <li>Brands List</li>
-            <li>Order</li>
-            <li>Return & Exchange</li>
-            <li>Fashion List</li>
-            <li>Blog</li>
-          </ul>
-        </div>
+        
 
         {/* Contact */}
         <div style={styles.column}>
           <h3>Contact Us</h3>
-          <p>+91 9999 999 999</p>
-          <p>youremailid.com</p>
+          <p>+212 6 53 8593 72</p>
+          <p>eloirdiwi@gmail.com</p>
           <div style={styles.socialIcons}>
-            <span>FB</span> <span>G+</span> <span>TW</span> <span>IN</span>
+       
           </div>
         </div>
       </div>
 
       {/* Footer Bottom */}
       <div style={styles.footerBottom}>
-        <p>2025 &copy; Colorly | Made By <a style={styles.hyper} href="https://www.eloirdiwi.me" target="_blank" rel="noopener noreferrer">Aymane Eloirdiwi</a></p>
+        <p>2025 © Colorly | Made By <a style={styles.hyper} href="https://www.eloirdiwi.me" target="_blank" rel="noopener noreferrer">Aymane Eloirdiwi</a></p>
         <div>
-          <span>FAQ</span> | <span>Privacy</span> | <span>Terms & Condition</span>
+         
         </div>
       </div>
     </footer>
