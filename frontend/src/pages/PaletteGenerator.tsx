@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import randomColor from "randomcolor";
 import copy from "copy-to-clipboard";
 import namer from "color-namer";
@@ -48,8 +48,10 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
     ]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [paletteName, setPaletteName] = useState<string>("");
-        const [showGenerationModal, setShowGenerationModal] = useState(false);
+    const [showGenerationModal, setShowGenerationModal] = useState(false);
     const [selectedGenerationMethod, setSelectedGenerationMethod] = useState(localStorage.getItem("generationMethod") || "Auto")
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
 
     const handleLockToggle = (index: number) => {
         setPalette((prevPalette) =>
@@ -97,62 +99,62 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         } else if (max === g) {
             hue = 2 + (b - r) / (max - min);
         } else {
-             hue = 4 + (r - g) / (max - min)
+            hue = 4 + (r - g) / (max - min)
         }
 
-       hue = hue * 60
-       if (hue < 0) {
-         hue += 360;
-       }
+        hue = hue * 60
+        if (hue < 0) {
+            hue += 360;
+        }
 
         return Math.round(hue); // returns the hue in degrees
     };
 
-      const generateMonochromatic = (baseColor, modifier) => {
-          const base = chroma(baseColor);
-          return chroma.hsl(base.get('hsl.h'), base.get('hsl.s'),(Math.random() * (0.9 - 0.1) + 0.1) + modifier*0.05).hex()
-      };
-
-        const generateAnalogous = (baseColor, modifier) => {
-            const base = chroma(baseColor);
-            const hue = base.get('hsl.h') + (Math.random() * (1 - -1) + -1) * 30 * modifier ;
-           return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
-      };
-
-    const generateComplementary = (baseColor, modifier) => {
-         const base = chroma(baseColor);
-         const hue = base.get('hsl.h') + (modifier%2 === 0 ? 0 : 180)
-        return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
-
-      };
-
-     const generateSplitComplementary = (baseColor, modifier) => {
-         const base = chroma(baseColor);
-          const hue = base.get('hsl.h') + (modifier%3 === 0 ? 0 : modifier%3 === 1 ? 150 : 210);
-          return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
+    const generateMonochromatic = (baseColor, modifier) => {
+        const base = chroma(baseColor);
+        return chroma.hsl(base.get('hsl.h'), base.get('hsl.s'), (Math.random() * (0.9 - 0.1) + 0.1) + modifier * 0.05).hex()
     };
 
-        const generateTriadic = (baseColor, modifier) => {
-           const base = chroma(baseColor);
-            const hue = base.get('hsl.h') + (modifier* 120);
-           return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
-      };
+    const generateAnalogous = (baseColor, modifier) => {
+        const base = chroma(baseColor);
+        const hue = base.get('hsl.h') + (Math.random() * (1 - -1) + -1) * 30 * modifier;
+        return chroma.hsl(hue, base.get('hsl.s'), base.get('hsl.l')).hex()
+    };
 
-       const generateTetradic = (baseColor, modifier) => {
-             const base = chroma(baseColor);
-          const hue = base.get('hsl.h') + (modifier* 90);
-          return chroma.hsl(hue , base.get('hsl.s') , base.get('hsl.l')).hex()
-      };
+    const generateComplementary = (baseColor, modifier) => {
+        const base = chroma(baseColor);
+        const hue = base.get('hsl.h') + (modifier % 2 === 0 ? 0 : 180)
+        return chroma.hsl(hue, base.get('hsl.s'), base.get('hsl.l')).hex()
+
+    };
+
+    const generateSplitComplementary = (baseColor, modifier) => {
+        const base = chroma(baseColor);
+        const hue = base.get('hsl.h') + (modifier % 3 === 0 ? 0 : modifier % 3 === 1 ? 150 : 210);
+        return chroma.hsl(hue, base.get('hsl.s'), base.get('hsl.l')).hex()
+    };
+
+    const generateTriadic = (baseColor, modifier) => {
+        const base = chroma(baseColor);
+        const hue = base.get('hsl.h') + (modifier * 120);
+        return chroma.hsl(hue, base.get('hsl.s'), base.get('hsl.l')).hex()
+    };
+
+    const generateTetradic = (baseColor, modifier) => {
+        const base = chroma(baseColor);
+        const hue = base.get('hsl.h') + (modifier * 90);
+        return chroma.hsl(hue, base.get('hsl.s'), base.get('hsl.l')).hex()
+    };
 
 
-   const generatePalette = async () => {
+    const generatePalette = async () => {
         const lockedColors = palette.filter((color) => color.locked);
         const newPalette = await Promise.all(
             palette.map(async (color, index) => {
                 if (color.locked) {
                     return color;
                 } else {
-                   let hex = undefined;
+                    let hex = undefined;
                     if (selectedGenerationMethod === "Auto") {
                         let hue = undefined;
                         if (lockedColors.length > 0) {
@@ -162,39 +164,39 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                             const modifier = (Math.random() * (60 - -60) + -60)
                             hue = hue + modifier
                         }
-                           if (hue) {
-                                hex = chroma.hsl(hue , chroma(randomColor()).get('hsl.s') , chroma(randomColor()).get('hsl.l')).hex();
-                            } else {
-                                hex = randomColor()
-                            }
+                        if (hue) {
+                            hex = chroma.hsl(hue, chroma(randomColor()).get('hsl.s'), chroma(randomColor()).get('hsl.l')).hex();
+                        } else {
+                            hex = randomColor()
+                        }
                     } else {
-                           const baseColor = lockedColors.length > 0 ? lockedColors[0].hex : randomColor();
-                               let modifier = (Math.random() * (1 - -1) + -1)
-                               switch (selectedGenerationMethod) {
-                                    case 'Monochromatic':
-                                        hex = generateMonochromatic(baseColor, modifier)
-                                     break;
-                                    case 'Analogous':
-                                         hex = generateAnalogous(baseColor,modifier);
-                                        break;
-                                    case 'Complementary':
-                                        hex = generateComplementary(baseColor,index);
-                                        break;
-                                    case 'Split Complementary':
-                                          hex = generateSplitComplementary(baseColor,index);
-                                         break;
-                                    case 'Triadic':
-                                        hex = generateTriadic(baseColor,index);
-                                        break;
-                                    case 'Tetradic':
-                                       hex = generateTetradic(baseColor,index);
-                                        break;
-                                    default:
-                                        hex = randomColor()
-                                }
-                            }
+                        const baseColor = lockedColors.length > 0 ? lockedColors[0].hex : randomColor();
+                        let modifier = (Math.random() * (1 - -1) + -1)
+                        switch (selectedGenerationMethod) {
+                            case 'Monochromatic':
+                                hex = generateMonochromatic(baseColor, modifier)
+                                break;
+                            case 'Analogous':
+                                hex = generateAnalogous(baseColor, modifier);
+                                break;
+                            case 'Complementary':
+                                hex = generateComplementary(baseColor, index);
+                                break;
+                            case 'Split Complementary':
+                                hex = generateSplitComplementary(baseColor, index);
+                                break;
+                            case 'Triadic':
+                                hex = generateTriadic(baseColor, index);
+                                break;
+                            case 'Tetradic':
+                                hex = generateTetradic(baseColor, index);
+                                break;
+                            default:
+                                hex = randomColor()
+                        }
+                    }
 
-                     const name = await getNearestColorName(hex);
+                    const name = await getNearestColorName(hex);
                     const textColor = getContrastColor(hex);
                     return { hex, name, textColor, locked: false };
                 }
@@ -208,7 +210,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         console.log("Palette updated:", palette);
         localStorage.setItem("generationMethod", selectedGenerationMethod)
 
-    }, [palette,selectedGenerationMethod]);
+    }, [palette, selectedGenerationMethod]);
 
     const addColor = async () => {
         const newColorHex = randomColor();
@@ -263,32 +265,102 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         if (palette.length > 0) {
             const hexPalette = palette.map(color => color.hex);
             const paletteString = hexPalette.join(',');
-            const encodedPaletteString = encodeURIComponent(paletteString); // <---- ENCODE HERE
-            const visualizerUrl = `/palette-visualizer?palette=${encodedPaletteString}`; // Use encoded string
+            const encodedPaletteString = encodeURIComponent(paletteString);
+            const visualizerUrl = `/palette-visualizer?palette=${encodedPaletteString}`;
             window.open(visualizerUrl, '_blank');
         } else {
-            alert("Generate a palette first!");
+            setNotification({ message: `Generate a palette first!`, duration: 3000 });
         }
     };
 
-   const handleSharePalette = () => {
-       if (palette.length > 0) {
+    const handleSharePalette = () => {
+        if (palette.length > 0) {
             const hexPalette = palette.map(color => color.hex);
-              const paletteString = hexPalette.join(',');
-               const encodedPaletteString = encodeURIComponent(paletteString);
-              const currentUrl = window.location.href;
-             const visualizerUrl = `${currentUrl.split('/').slice(0,3).join('/')}/palette-visualizer?palette=${encodedPaletteString}`;
-              copy(visualizerUrl);
+            const paletteString = hexPalette.join(',');
+            const encodedPaletteString = encodeURIComponent(paletteString);
+            const currentUrl = window.location.href;
+            const visualizerUrl = `${currentUrl.split('/').slice(0, 3).join('/')}/palette-visualizer?palette=${encodedPaletteString}`;
+            copy(visualizerUrl);
             setNotification({ message: `Palette URL Copied`, duration: 3000 });
-            } else {
-            alert("Generate a palette first!");
-         }
+        } else {
+            setNotification({ message: `Generate a palette first!`, duration: 3000 });
+        }
 
     }
 
+    const downloadPaletteImage = () => {
+        if (!canvasRef.current || palette.length <= 0) {
+            setNotification({ message: `Generate a palette first!`, duration: 3000 });
+            return;
+        }
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const height = 250;
+        const barWidth = Math.max(150, 1000 / palette.length); // ensures min bar width of 150
+
+        const width = barWidth * palette.length;
+        console.log("Canvas dimensions:", { width, height });
+
+        canvas.width = width;
+        canvas.height = height;
+
+          console.log("Canvas actual dimensions:", { width: canvas.width, height: canvas.height });
+
+
+        const textColor = "#000"
+        const backgroundColor = "#fff"
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, width, height)
+        ctx.font = '14px sans-serif';
+        ctx.fillStyle = textColor
+
+
+        for (let i = 0; i < palette.length; i++) {
+            const color = palette[i];
+            const colorStart = i * barWidth;
+               console.log(`Drawing color ${i}:`, {
+                color,
+                colorStart,
+                 barWidth
+            });
+            ctx.fillStyle = color.hex;
+            ctx.fillRect(colorStart, 0, barWidth, height / 2);
+
+            // Calculate the RGB value and convert to string
+            const rgb = chroma(color.hex).rgb();
+            const rgbText = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+            // Text styling
+            let fontSize = 14;
+            if (palette.length > 6) {
+                fontSize = 10;
+                ctx.font = `${fontSize}px sans-serif`;
+            } else {
+                ctx.font = `${fontSize}px sans-serif`;
+            }
+
+            // Calculate the text y position based on font size
+          const textYStart = height/2 + fontSize + 5;  // use fontSize as reference
+            ctx.fillStyle = getContrastColor(color.hex);
+            ctx.fillText(color.name, colorStart + 5, textYStart + 0); //0 margin for color name
+            ctx.fillText(color.hex.replace("#", "").toUpperCase(), colorStart + 5, textYStart + fontSize * 1.5); // offset for the hex
+            ctx.fillText(rgbText, colorStart + 5, textYStart + fontSize * 3);  // offset for the rgb text
+        }
+
+        // Download the image
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = 'palette.png';
+        link.click();
+
+    };
+
+
     const handleSavePalette = async () => {
         if (!paletteName) {
-            alert("Please provide a name for the palette.");
+            setNotification({ message: `Please provide a name for the palette.`, duration: 3000 });
             return;
         }
         try {
@@ -306,14 +378,14 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
             });
             const data = await response.json();
             if (response.ok) {
-                alert(`Palette saved successfully! ID: ${data.id}`);
+                setNotification({ message: `Palette saved successfully! ID: ${data.id}`, duration: 3000 });
                 setShowModal(false);
             } else {
-                alert(`Error saving palette: ${data.error}`);
+                setNotification({ message: `Error saving palette: ${data.error}`, duration: 3000 });
             }
         } catch (error) {
             console.error("Error saving palette:", error);
-            alert("There was an error saving the palette.");
+            setNotification({ message: "There was an error saving the palette.", duration: 3000 });
         }
     };
 
@@ -338,7 +410,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         {
             icon: faCamera,
             tooltip: "Camera",
-            action: () => alert("implementing camera...")
+            action: downloadPaletteImage
         },
         {
             icon: faSync,
@@ -358,14 +430,14 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         {
             icon: faEye,
             tooltip: "View",
-            action: handleViewPalette 
+            action: handleViewPalette
         },
         {
             icon: faShareAlt,
             tooltip: "Share",
             action: handleSharePalette
         },
-         {
+        {
             icon: faPalette,
             tooltip: "Generation method",
             action: () => setShowGenerationModal(true)
@@ -376,7 +448,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
             action: () => alert("implementing settings...")
         },
     ];
-      const generationMethods = [
+    const generationMethods = [
         "Auto",
         "Monochromatic",
         "Analogous",
@@ -388,6 +460,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
 
     return (
         <div className="palette-generator">
+            <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
             <div className="toolbar">
                 {toolbarItems.map((item, index) => (
                     <div key={index} className="toolbar-button" onClick={item.action}>
@@ -400,7 +473,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                 {palette.map((color, index) => (
                     <div
                         key={index}
-                         className={`palette-color-box`}
+                        className={`palette-color-box`}
                         style={{ backgroundColor: color.hex }}
                     >
                         <div className="icons">
@@ -418,7 +491,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                             >
                                 <FontAwesomeIcon icon={faTrash} size="lg" />
                             </span>
-                             <span
+                            <span
                                 className="pallc-save-button"
                                 onClick={() => handleSaveColor(color.hex)}
                                 style={{ color: color.textColor }}
@@ -430,7 +503,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                                 onClick={() => handleLockToggle(index)}
                                 style={{ color: color.textColor }}
                             >
-                                 <FontAwesomeIcon
+                                <FontAwesomeIcon
                                     icon={faLock}
                                     size="lg"
                                     className={`locked`}
@@ -440,7 +513,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                                     icon={faLockOpen}
                                     size="lg"
                                     className={`unlocked`}
-                                     style={{ display: color.locked ? 'none' : 'inline-flex' }}
+                                    style={{ display: color.locked ? 'none' : 'inline-flex' }}
                                 />
                             </span>
                         </div>
@@ -476,28 +549,28 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                     </div>
                 </div>
             )}
-             {/* Modal for changing generation method */}
-           {showGenerationModal && (
-           <div className="modal-overlay">
-                <div className="modal">
-                    <h3>Generate Method</h3>
-                    {generationMethods.map(method => (
-                        <div style={{ padding: 10, display: "flex", alignItems: 'center', cursor: 'pointer', backgroundColor: selectedGenerationMethod === method ? '#f0f0f0' : 'white' }}  onClick={() => {
-                            setSelectedGenerationMethod(method)
-                            setShowGenerationModal(false)
-                        }} key={method}>
-                            {method}
-                            {selectedGenerationMethod === method ?
-                                 <FontAwesomeIcon icon={faHeart} size="xs"  style={{ color: 'red', marginLeft: 5}}/>
-                                : null}
-                         </div>
-                    ))}
-                    <div className="modal-actions">
+            {/* Modal for changing generation method */}
+            {showGenerationModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h3>Generate Method</h3>
+                        {generationMethods.map(method => (
+                            <div style={{ padding: 10, display: "flex", alignItems: 'center', cursor: 'pointer', backgroundColor: selectedGenerationMethod === method ? '#f0f0f0' : 'white' }} onClick={() => {
+                                setSelectedGenerationMethod(method)
+                                setShowGenerationModal(false)
+                            }} key={method}>
+                                {method}
+                                {selectedGenerationMethod === method ?
+                                    <FontAwesomeIcon icon={faHeart} size="xs" style={{ color: 'red', marginLeft: 5 }} />
+                                    : null}
+                            </div>
+                        ))}
+                        <div className="modal-actions">
                             <button onClick={() => setShowGenerationModal(false)}>Cancel</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-           )}
+            )}
         </div>
     );
 };
