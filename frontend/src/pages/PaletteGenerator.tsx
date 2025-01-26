@@ -97,13 +97,13 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         } else if (max === g) {
             hue = 2 + (b - r) / (max - min);
         } else {
-            hue = 4 + (r - g) / (max - min)
+             hue = 4 + (r - g) / (max - min)
         }
 
-        hue = hue * 60
-        if (hue < 0) {
-            hue += 360;
-        }
+       hue = hue * 60
+       if (hue < 0) {
+         hue += 360;
+       }
 
         return Math.round(hue); // returns the hue in degrees
     };
@@ -184,7 +184,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
                                           hex = generateSplitComplementary(baseColor,index);
                                          break;
                                     case 'Triadic':
-                                          hex = generateTriadic(baseColor,index);
+                                        hex = generateTriadic(baseColor,index);
                                         break;
                                     case 'Tetradic':
                                        hex = generateTetradic(baseColor,index);
@@ -271,6 +271,21 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         }
     };
 
+   const handleSharePalette = () => {
+       if (palette.length > 0) {
+            const hexPalette = palette.map(color => color.hex);
+              const paletteString = hexPalette.join(',');
+               const encodedPaletteString = encodeURIComponent(paletteString);
+              const currentUrl = window.location.href;
+             const visualizerUrl = `${currentUrl.split('/').slice(0,3).join('/')}/palette-visualizer?palette=${encodedPaletteString}`;
+              copy(visualizerUrl);
+            setNotification({ message: `Palette URL Copied`, duration: 3000 });
+            } else {
+            alert("Generate a palette first!");
+         }
+
+    }
+
     const handleSavePalette = async () => {
         if (!paletteName) {
             alert("Please provide a name for the palette.");
@@ -348,7 +363,7 @@ const PaletteGenerator = ({ setNotification }: { setNotification: any }) => {
         {
             icon: faShareAlt,
             tooltip: "Share",
-            action: () => alert("implementing share...")
+            action: handleSharePalette
         },
          {
             icon: faPalette,
