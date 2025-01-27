@@ -58,7 +58,7 @@ const ColorVariations: React.FC<ColorVariationsProps> = ({ color, onColorCopy })
 
       const data = await response.json();
       if (response.ok) {
-        alert(`Color saved successfully! ID: ${data.id}`);
+        
       } else {
         alert(`Error saving color: ${data.error}`);
       }

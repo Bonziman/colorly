@@ -13,16 +13,20 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  list-style: none;
+  padding : 0px;
 }
 .palettes-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-   width: auto;
+  width: auto;
   min-width: 450px;
+  padding-left: 0px;
+  
 }
 .palette-item{
-  width: 200px;
+  min-width: 200px;
 }
 
 
@@ -132,11 +136,13 @@
 
 .export-menu button {
   padding: 5px 10px;
-    text-align: left;
+  text-align: left;
   background-color: white;
+  color: #464853;
   border: none;
   cursor: pointer;
   font-size: 0.9em;
+  font-weight: normal;
   white-space: nowrap;
 }
 
